@@ -1,5 +1,4 @@
-from requests import post
-from json import loads
+import requests
 
 
 def share(ttl, secret, password=None):
@@ -9,11 +8,11 @@ def share(ttl, secret, password=None):
     data = {'secret': secret, 'ttl': ttl}
 
     if password:
-        data.update({'passphrase': password})
+        data['passphrase'] = password
 
-    res = loads(post(url, data=data).text)
+    res = requests.post(url, data=data).json()
 
-    if 'message' in res.keys():
+    if 'message' in res:
         return 0
 
     open_url += res['secret_key']
